@@ -2,49 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Expansion
+class Expansion extends Model
 {
-    public static function all()
+    protected $table = 'expansiones';
+
+    protected $fillable = ['titulo', 'juego_id', 'idioma_id'];
+
+    // Relación Eloquent: Una expansión pertenece a un juego
+    public function juego(): BelongsTo
     {
-        return DB::table('expansiones as e')
-            ->join('juegos as j', 'e.juego_id', '=', 'j.id')
-            ->join('idiomas as i', 'e.idioma_id', '=', 'i.id')
-            ->select('e.id', 'e.titulo', 'j.titulo as juego_base', 'i.nombre as idioma')
-            ->get();
+        return $this->belongsTo(Juego::class, 'juego_id');
     }
 
-    public static function find($id)
+    // Relación Eloquent: Una expansión pertenece a un idioma
+    public function idioma(): BelongsTo
     {
-        return DB::table('expansiones as e')
-            ->join('juegos as j', 'e.juego_id', '=', 'j.id')
-            ->join('idiomas as i', 'e.idioma_id', '=', 'i.id')
-            ->select('e.id', 'e.titulo', 'j.titulo as juego_base', 'i.nombre as idioma', 'e.juego_id', 'e.idioma_id')
-            ->where('e.id', $id)
-            ->first();
-    }
-
-    public static function create(array $datos)
-    {
-        return DB::table('expansiones')->insert([
-            'juego_id'  => $datos['juego_id'] ?? null,
-            'titulo'    => $datos['titulo'] ?? null,
-            'idioma_id' => $datos['idioma_id'] ?? null,
-        ]);
-    }
-
-    public static function update($id, array $datos)
-    {
-        return DB::table('expansiones')->where('id', $id)->update([
-            'juego_id'  => $datos['juego_id'] ?? null,
-            'titulo'    => $datos['titulo'] ?? null,
-            'idioma_id' => $datos['idioma_id'] ?? null,
-        ]);
-    }
-
-    public static function destroy($id)
-    {
-        return DB::table('expansiones')->where('id', $id)->delete();
+        return $this->belongsTo(Idioma::class, 'idioma_id');
     }
 }

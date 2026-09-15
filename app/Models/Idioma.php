@@ -2,38 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Idioma
+class Idioma extends Model
 {
-    public static function all()
+    protected $table = 'idiomas';
+    protected $fillable = ['nombre', 'codigo'];
+
+    // Relación Eloquent: Un idioma tiene muchos Juegos
+    public function juegos(): HasMany
     {
-        return DB::table('idiomas')->get();
+        return $this->hasMany(Juego::class, 'idioma_id');
     }
 
-    public static function find($id)
+    // Relación Eloquent: Un idioma tiene muchas Expansiones
+    public function expansiones(): HasMany
     {
-        return DB::table('idiomas')->where('id', $id)->first();
-    }
-
-    public static function create(array $datos)
-    {
-        return DB::table('idiomas')->insert([
-            'nombre' => $datos['nombre'] ?? null,
-            'codigo' => $datos['codigo'] ?? null,
-        ]);
-    }
-
-    public static function update($id, array $datos)
-    {
-        return DB::table('idiomas')->where('id', $id)->update([
-            'nombre' => $datos['nombre'] ?? null,
-            'codigo' => $datos['codigo'] ?? null,
-        ]);
-    }
-
-    public static function destroy($id)
-    {
-        return DB::table('idiomas')->where('id', $id)->delete();
+        return $this->hasMany(Expansion::class, 'idioma_id');
     }
 }

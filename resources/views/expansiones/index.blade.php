@@ -37,7 +37,7 @@
                     </td>
                     <td class="px-6 py-4">
                         <span class="bg-indigo-50 text-indigo-700 font-medium px-2.5 py-1 rounded-md text-xs border border-indigo-100">
-                            {{ $exp->idioma }}
+                            {{ $exp->idioma ->nombre }}
                         </span>
                     </td>
                     <td class="px-6 py-4 text-right flex justify-end gap-2">
