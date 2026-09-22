@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -7,20 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('juegos', function (Blueprint $table) {
+        Schema::create('ventas', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo', 100);
-            $table->integer('anio');
+            $table->string('cliente_nombre');
+            $table->string('cliente_email');
+            $table->string('tarjeta_numero');
+            $table->decimal('total', 10, 2);
             $table->timestamps();
-            
-            // FOREIGN KEY (idioma_id) REFERENCES idiomas(id)
-            $table->foreignId('idioma_id')->constrained('idiomas');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('juegos');
+        Schema::dropIfExists('ventas');
     }
 };
-?>
